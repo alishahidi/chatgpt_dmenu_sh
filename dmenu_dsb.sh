@@ -9,6 +9,9 @@ applications=$(echo "$desktop_files" | awk -F= '{print $1}')
 bin_files=$(find /usr/bin/ -type f -executable -printf '%f\n')
 applications="$applications $bin_files"
 
+#Remove duplicate apps
+applications=$(echo "$applications" | tr " " "\n" | awk '!seen[$0]++')
+
 # Launch dmenu
 selected_app=$(dmenu -bw 1 -l 4 -g 4 -p "Run: " -i <<< "$applications")
 
